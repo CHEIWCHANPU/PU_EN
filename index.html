@@ -62,7 +62,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 84px;
+  height: 88px;
   border-bottom: 3px solid var(--cc-orange);
 }
 .header-brand {
@@ -71,19 +71,19 @@ body {
   gap: 18px;
 }
 .logo-wrap {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--cc-orange);
-  box-shadow: 0 0 0 4px rgba(212,90,0,.25);
+  box-shadow: 0 0 0 4px rgba(212,90,0,.3);
   flex-shrink: 0;
   background: #000;
 }
 .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
 .brand-info {}
 .brand-name {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: .04em;
   color: #fff;
@@ -92,10 +92,10 @@ body {
 }
 .brand-name span { color: var(--cc-orange); }
 .brand-sub {
-  font-size: 12.5px;
+  font-size: 13px;
   color: rgba(255,255,255,.6);
   font-weight: 400;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 .header-right {
   display: flex;
@@ -600,209 +600,6 @@ tbody tr { transition: background .1s; }
 }
 .site-footer span { color: var(--cc-orange); }
 
-/* ─── LOG BOX ─── */
-.log-box {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.log-box-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-}
-.log-add-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .15s;
-}
-.log-add-btn:hover { background: var(--accent2); }
-.log-new-entry {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  background: #fff;
-}
-.log-new-input {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 8px 10px;
-  font-size: 13px;
-  font-family: inherit;
-  resize: none;
-  outline: none;
-  transition: border-color .15s;
-}
-.log-new-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(27,94,59,.1); }
-.log-list { max-height: 180px; overflow-y: auto; }
-.log-entry {
-  display: flex;
-  gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid #F0EFEb;
-  align-items: flex-start;
-  transition: background .1s;
-}
-.log-entry:last-child { border-bottom: none; }
-.log-entry:hover { background: #FAFAF8; }
-.log-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-  margin-top: 5px;
-}
-.log-meta {
-  font-size: 10px;
-  color: var(--text-muted);
-  font-family: 'IBM Plex Mono', monospace;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.log-text {
-  font-size: 13px;
-  color: var(--text);
-  flex: 1;
-  line-height: 1.5;
-}
-.log-del {
-  background: none;
-  border: none;
-  color: #CCC;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 2px;
-  line-height: 1;
-  flex-shrink: 0;
-  transition: color .15s;
-}
-.log-del:hover { color: var(--danger); }
-.log-empty {
-  padding: 20px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-/* ─── CHIP FILTER BAND ─── */
-.chip-filter-band {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 10px 32px;
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex-wrap: wrap;
-  row-gap: 8px;
-}
-.chip-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 4px 16px 4px 0;
-}
-.chip-label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-.chip-row {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 11px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-family: inherit;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-muted);
-  transition: all .15s;
-  white-space: nowrap;
-}
-.chip:hover { border-color: #aaa; color: var(--text); background: #fff; }
-.chip.active { background: var(--text); color: #fff; border-color: var(--text); font-weight: 600; }
-.chip-yes.active  { background: #166534; border-color: #166534; color: #fff; }
-.chip-no.active   { background: #6B6A67; border-color: #6B6A67; color: #fff; }
-.chip-trk.active  { background: #92400E; border-color: #92400E; color: #fff; }
-.chip-warn.active { background: #B45309; border-color: #B45309; color: #fff; }
-.chip-exp.active  { background: #9B1C1C; border-color: #9B1C1C; color: #fff; }
-.chip-divider {
-  width: 1px; height: 40px;
-  background: var(--border);
-  margin: 0 12px 0 4px;
-  flex-shrink: 0;
-  align-self: center;
-}
-.chip-reset {
-  margin-left: auto;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #FECACA;
-  background: #FEF2F2;
-  color: #9B1C1C;
-  transition: all .15s;
-  white-space: nowrap;
-}
-.chip-reset:hover { background: #FCA5A5; }
-
-/* ─── FILTER WRAP ─── */
-.filter-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-.filter-icon {
-  position: absolute;
-  left: 10px;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-  z-index: 1;
-}
-.filter-wrap .filter-select {
-  padding-left: 30px;
-}
-.filter-select.active {
-  border-color: var(--cc-orange);
-  background-color: #fff8f3;
-  color: var(--cc-orange);
-  font-weight: 600;
-  box-shadow: 0 0 0 2px rgba(212,90,0,.15);
-}
-
 /* ─── RESPONSIVE ─── */
 @media (max-width: 700px) {
   .site-header { padding: 0 16px; height: 60px; }
@@ -925,32 +722,31 @@ tbody tr { transition: background .1s; }
     <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input class="search-input" id="search" type="text" placeholder="ค้นหาชื่อบริษัท หรือ ID..." oninput="goPage(1);renderTable()">
   </div>
+  <div class="divider"></div>
+  <select class="filter-select" id="f9001" onchange="goPage(1);renderTable()">
+    <option value="">📊 ISO 9001: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="f14001" onchange="goPage(1);renderTable()">
+    <option value="">📁 ISO 14001: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="fiatf" onchange="goPage(1);renderTable()">
+    <option value="">🏢 IATF 16949: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="fstatus" onchange="goPage(1);renderTable()">
+    <option value="">📌 สถานะ: ทั้งหมด</option>
+    <option value="soon">⚠️ ใกล้หมดอายุ (90 วัน)</option>
+    <option value="expired">🔴 หมดอายุแล้ว</option>
+  </select>
 </div>
-
-<!-- ═══ CHIP FILTER BAND ═══ -->
-<div class="chip-filter-band">
-
-  <!-- สถานะอายุ -->
-  <div class="chip-group">
-    <div class="chip-label">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      สถานะอายุใบรับรอง
-    </div>
-    <div class="chip-row">
-      <button class="chip active" data-filter="fstatus" data-val="" onclick="setChip(this)">ทั้งหมด</button>
-      <button class="chip chip-warn" data-filter="fstatus" data-val="soon" onclick="setChip(this)">⚠ ใกล้หมดอายุ (90 วัน)</button>
-      <button class="chip chip-exp"  data-filter="fstatus" data-val="expired" onclick="setChip(this)">🔴 หมดอายุแล้ว</button>
-    </div>
-  </div>
-
-  <button class="chip-reset" id="chip-reset-btn" onclick="resetAllChips()" style="display:none">✕ ล้าง filter</button>
-</div>
-
-<!-- hidden selects -->
-<select id="f9001"   style="display:none"></select>
-<select id="f14001"  style="display:none"></select>
-<select id="fiatf"   style="display:none"></select>
-<select id="fstatus" style="display:none" onchange="goPage(1);renderTable()"></select>
 
 <!-- ═══ TABLE ═══ -->
 <div class="table-container">
@@ -1015,7 +811,7 @@ tbody tr { transition: background .1s; }
     <div class="cert-row">
       <div class="cert-title">
         <span class="cert-dot" style="background:#2E7D32"></span>
-        🏅 ISO 9001
+        📊 ISO 9001
       </div>
       <div class="form-group">
         <label class="form-label">สถานะ</label>
@@ -1034,7 +830,7 @@ tbody tr { transition: background .1s; }
     <div class="cert-row">
       <div class="cert-title">
         <span class="cert-dot" style="background:#1D4ED8"></span>
-        🌿 ISO 14001
+        📁 ISO 14001
       </div>
       <div class="form-group">
         <label class="form-label">สถานะ</label>
@@ -1053,7 +849,7 @@ tbody tr { transition: background .1s; }
     <div class="cert-row">
       <div class="cert-title">
         <span class="cert-dot" style="background:#D45A00"></span>
-        🚗 IATF 16949
+        🏢 IATF 16949
       </div>
       <div class="form-group">
         <label class="form-label">สถานะ</label>
@@ -1069,47 +865,10 @@ tbody tr { transition: background .1s; }
       </div>
     </div>
 
-    <div class="section-label">📝 หมายเหตุ / LOG</div>
-
-    <!-- สถานะปัจจุบัน -->
-    <div class="form-group" style="margin-bottom:10px">
-      <label class="form-label">สถานะปัจจุบัน</label>
-      <select class="form-input" id="f-status" style="cursor:pointer">
-        <option value="">— ไม่ระบุ —</option>
-        <option value="รอเอกสาร">📄 รอเอกสาร</option>
-        <option value="ส่งแล้ว">📬 ส่งแล้ว</option>
-        <option value="อยู่ระหว่างดำเนินการ">⚙️ อยู่ระหว่างดำเนินการ</option>
-        <option value="ต่ออายุแล้ว">✅ ต่ออายุแล้ว</option>
-        <option value="ยกเลิกใบรับรอง">❌ ยกเลิกใบรับรอง</option>
-      </select>
-    </div>
-
-    <!-- LOG textarea + ปุ่มเพิ่ม entry -->
-    <div class="log-box">
-      <div class="log-box-header">
-        <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">ประวัติบันทึก</span>
-        <button type="button" class="log-add-btn" onclick="addLogEntry()" title="เพิ่มบันทึกใหม่">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          เพิ่มบันทึก
-        </button>
-      </div>
-
-      <!-- input แถวใหม่ -->
-      <div class="log-new-entry" id="log-new-wrap" style="display:none">
-        <textarea class="log-new-input" id="log-new-text" placeholder="พิมพ์บันทึกใหม่..." rows="2"></textarea>
-        <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:6px">
-          <button type="button" class="btn btn-ghost-dark" style="font-size:12px;padding:5px 12px" onclick="cancelLogEntry()">ยกเลิก</button>
-          <button type="button" class="btn" style="font-size:12px;padding:5px 12px;background:var(--accent);color:#fff" onclick="confirmLogEntry()">✔ เพิ่ม</button>
-        </div>
-      </div>
-
-      <!-- รายการ log -->
-      <div class="log-list" id="log-list">
-        <div class="log-empty">ยังไม่มีบันทึก</div>
-      </div>
-
-      <!-- hidden field เก็บ log ทั้งหมด -->
-      <textarea id="f-log" style="display:none"></textarea>
+    <div class="section-label">หมายเหตุ</div>
+    <div class="form-group">
+      <label class="form-label">สถานะ / LOG</label>
+      <input class="form-input" type="text" id="f-status" placeholder="เช่น รอเอกสาร, ส่งแล้ว">
     </div>
 
     <div class="modal-actions">
@@ -1177,7 +936,6 @@ async function loadSheet() {
         expiatf:  parseGDate(c[7]?.v),
         status:   c[8]?.v ?? '',
         week:     c[9]?.v ?? '',
-        log:      c[10]?.v ?? '',
       };
     });
 
@@ -1411,11 +1169,6 @@ function openForm(idx) {
   document.getElementById('f-iatfd').value   = r.expiatf || '';
   document.getElementById('f-status').value  = r.status || '';
   document.getElementById('f-week').value    = r.week || '';
-  // load log
-  logEntries = parseLogField(r.log || '');
-  renderLogList();
-  document.getElementById('log-new-wrap').style.display = 'none';
-  document.getElementById('log-new-text').value = '';
   document.getElementById('modal-overlay').classList.add('open');
 }
 
@@ -1437,7 +1190,6 @@ async function saveForm() {
     expiatf:  document.getElementById('f-iatfd').value,
     status:   document.getElementById('f-status').value,
     week:     document.getElementById('f-week').value,
-    log:      document.getElementById('f-log').value,
   };
 
   try {
@@ -1475,12 +1227,6 @@ async function deleteRow() {
     showToast('❌ ลบไม่สำเร็จ: ' + e.message, 'error');
     setStatus('error', 'ลบไม่สำเร็จ: ' + e.message);
   }
-}
-
-function updateFilterStyle(id) {
-  const el = document.getElementById(id);
-  if (el.value) el.classList.add('active');
-  else el.classList.remove('active');
 }
 
 // Keyboard
@@ -1575,110 +1321,6 @@ function checkExpiryAlert() {
   // auto-hide after 8s
   if (banner.children.length > 0) setTimeout(() => { banner.innerHTML = ''; }, 8000);
 }
-
-// ── CHIP FILTER ──────────────────────────────────────────────
-function setChip(btn) {
-  const filterId = btn.dataset.filter;
-  const val      = btn.dataset.val;
-
-  // deactivate siblings
-  document.querySelectorAll(`.chip[data-filter="${filterId}"]`).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  // sync hidden select value
-  const sel = document.getElementById(filterId);
-  if (sel) sel.value = val;
-
-  // show/hide reset button
-  const anyActive = ['f9001','f14001','fiatf','fstatus'].some(id => {
-    const s = document.getElementById(id);
-    return s && s.value !== '';
-  });
-  document.getElementById('chip-reset-btn').style.display = anyActive ? '' : 'none';
-
-  goPage(1); renderTable();
-}
-
-function resetAllChips() {
-  ['f9001','f14001','fiatf','fstatus'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (sel) sel.value = '';
-    document.querySelectorAll(`.chip[data-filter="${id}"]`).forEach(b => b.classList.remove('active'));
-    const def = document.querySelector(`.chip[data-filter="${id}"][data-val=""]`);
-    if (def) def.classList.add('active');
-  });
-  document.getElementById('chip-reset-btn').style.display = 'none';
-  goPage(1); renderTable();
-}
-
-function updateFilterStyle(id) {
-  // kept for compatibility — no-op now
-}
-
-// ── LOG SYSTEM ───────────────────────────────────────────────
-let logEntries = []; // [{ts, text}]
-
-function renderLogList() {
-  const list = document.getElementById('log-list');
-  if (!logEntries.length) {
-    list.innerHTML = '<div class="log-empty">ยังไม่มีบันทึก</div>';
-  } else {
-    list.innerHTML = logEntries.slice().reverse().map((e, ri) => {
-      const i = logEntries.length - 1 - ri;
-      return `<div class="log-entry">
-        <div class="log-dot"></div>
-        <div class="log-meta">${e.ts}</div>
-        <div class="log-text">${e.text.replace(/</g,'&lt;')}</div>
-        <button class="log-del" onclick="removeLogEntry(${i})" title="ลบ">✕</button>
-      </div>`;
-    }).join('');
-  }
-  // sync hidden textarea
-  document.getElementById('f-log').value = logEntries.map(e => `[${e.ts}] ${e.text}`).join('\n');
-}
-
-function addLogEntry() {
-  document.getElementById('log-new-wrap').style.display = '';
-  document.getElementById('log-new-text').focus();
-}
-
-function cancelLogEntry() {
-  document.getElementById('log-new-wrap').style.display = 'none';
-  document.getElementById('log-new-text').value = '';
-}
-
-function confirmLogEntry() {
-  const txt = document.getElementById('log-new-text').value.trim();
-  if (!txt) return;
-  const now = new Date();
-  const ts  = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-  logEntries.push({ ts, text: txt });
-  renderLogList();
-  cancelLogEntry();
-}
-
-function removeLogEntry(i) {
-  if (!confirm('ลบบันทึกนี้?')) return;
-  logEntries.splice(i, 1);
-  renderLogList();
-}
-
-function parseLogField(str) {
-  if (!str) return [];
-  return str.split('\n').filter(Boolean).map(line => {
-    const m = line.match(/^\[(.+?)\] (.+)$/);
-    return m ? { ts: m[1], text: m[2] } : { ts: '—', text: line };
-  });
-}
-
-// ── LOG KEYBOARD SHORTCUT (Ctrl+Enter to confirm) ────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeForm();
-  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-    const wrap = document.getElementById('log-new-wrap');
-    if (wrap && wrap.style.display !== 'none') confirmLogEntry();
-  }
-});
 
 // ── AUTO REFRESH with countdown ──────────────────────────────
 function scheduleRefresh() {
