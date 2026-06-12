@@ -404,19 +404,20 @@ async function loadSheet() {
     const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
     const rows = json.table.rows || [];
 
-    data = rows.filter(r => r.c && r.c[1]?.v !== null).map(r => {
+    // โค้ดใหม่ที่ถูกต้อง (เริ่มอ่านที่ c[0] คอลัมน์ A)
+data = rows.filter(r => r.c && r.c[0]?.v !== null).map(r => {
   const c = r.c;
   return {
-    id:       c[1]?.v ?? '', // เริ่มอ่านที่คอลัมน์ B (index 1)
-    name:     c[2]?.v ?? '',
-    iso9001:  c[3]?.v ?? '',
-    exp9001:  parseGDate(c[4]?.v),
-    iso14001: c[5]?.v ?? '',
-    exp14001: parseGDate(c[6]?.v),
-    iatf:     c[7]?.v ?? '',
-    expiatf:  parseGDate(c[8]?.v),
-    status:   c[9]?.v ?? '',
-    week:     c[10]?.v ?? '', // ถึงคอลัมน์ K (index 10)
+    id:       c[0]?.v ?? '', // คอลัมน์ A
+    name:     c[1]?.v ?? '', // คอลัมน์ B
+    iso9001:  c[2]?.v ?? '', // คอลัมน์ C
+    exp9001:  parseGDate(c[3]?.v), // คอลัมน์ D
+    iso14001: c[4]?.v ?? '', // คอลัมน์ E
+    exp14001: parseGDate(c[5]?.v), // คอลัมน์ F
+    iatf:     c[6]?.v ?? '', // คอลัมน์ G
+    expiatf:  parseGDate(c[7]?.v), // คอลัมน์ H
+    status:   c[8]?.v ?? '', // คอลัมน์ I
+    week:     c[9]?.v ?? '', // คอลัมน์ J
   };
 });
 
