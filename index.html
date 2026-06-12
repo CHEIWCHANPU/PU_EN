@@ -642,8 +642,8 @@ tbody tr { transition: background .1s; }
   </div>
 </header>
 
-<div class="time-display">
-    <span id="realtime-clock">กำลังโหลดเวลา...</span>
+<div style="text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold;">
+  🕒 <span id="realtime-clock">กำลังดึงเวลาปัจจุบัน...</span>
 </div>
   
 <!-- ═══ HERO BAND ═══ -->
@@ -1221,6 +1221,37 @@ document.addEventListener('keydown', e => { if (e.key==='Escape') closeForm(); }
 // Init
 loadSheet();
 setInterval(loadSheet, 5 * 60 * 1000);
+</script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  function updateThailandTime() {
+    const clockElement = document.getElementById('realtime-clock');
+    if (!clockElement) return; 
+
+    const now = new Date();
+    
+    // บังคับดึงเวลาโซนประเทศไทย (GMT+7) เสมอแม้ดูจากต่างประเทศ
+    const thailandTime = now.toLocaleTimeString('th-TH', {
+      timeZone: 'Asia/Bangkok',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+
+    const thailandDate = now.toLocaleDateString('th-TH', {
+      timeZone: 'Asia/Bangkok',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    clockElement.textContent = `${thailandDate} | ${thailandTime} น.`;
+  }
+
+  updateThailandTime();
+  setInterval(updateThailandTime, 1000); // ทำงานใหม่ทุก 1 วินาที ให้เข็มวินาทีเดิน
+});
 </script>
 </body>
 </html>
