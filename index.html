@@ -542,6 +542,28 @@ tbody tr { transition: background .1s; }
   border-radius: 50%;
   flex-shrink: 0;
 }
+/* ─── STATUS CHIPS ─── */
+.status-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.status-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .15s;
+  font-weight: 500;
+}
+.status-chip:hover { border-color: var(--cc-orange); color: var(--cc-orange); background: #fff8f3; }
+.status-chip.active { background: var(--cc-orange); border-color: var(--cc-orange); color: #fff; font-weight: 600; }
+
 .modal-actions {
   display: flex;
   align-items: center;
@@ -868,7 +890,12 @@ tbody tr { transition: background .1s; }
     <div class="section-label">หมายเหตุ</div>
     <div class="form-group">
       <label class="form-label">สถานะ / LOG</label>
-      <input class="form-input" type="text" id="f-status" placeholder="เช่น รอเอกสาร, ส่งแล้ว">
+      <div class="status-chips">
+        <button type="button" class="status-chip" data-val="รอเอกสาร"          onclick="selectStatus(this)">📄 รอเอกสาร</button>
+        <button type="button" class="status-chip" data-val="กำลังดำเนินการ"    onclick="selectStatus(this)">⚙️ กำลังดำเนินการ</button>
+        <button type="button" class="status-chip" data-val="เสร็จแล้ว"         onclick="selectStatus(this)">✅ เสร็จแล้ว</button>
+      </div>
+      <input class="form-input" type="text" id="f-status" placeholder="หรือพิมพ์เพิ่มเติม..." style="margin-top:8px" oninput="syncStatusChips(this.value)">
     </div>
 
     <div class="modal-actions">
@@ -1168,6 +1195,7 @@ function openForm(idx) {
   document.getElementById('f-iatf').value    = r.iatf || 'มี';
   document.getElementById('f-iatfd').value   = r.expiatf || '';
   document.getElementById('f-status').value  = r.status || '';
+  syncStatusChips(r.status || '');
   document.getElementById('f-week').value    = r.week || '';
   document.getElementById('modal-overlay').classList.add('open');
 }
@@ -1227,6 +1255,19 @@ async function deleteRow() {
     showToast('❌ ลบไม่สำเร็จ: ' + e.message, 'error');
     setStatus('error', 'ลบไม่สำเร็จ: ' + e.message);
   }
+}
+
+// ── STATUS CHIPS ─────────────────────────────────────────────
+function selectStatus(btn) {
+  document.querySelectorAll('.status-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('f-status').value = btn.dataset.val;
+}
+
+function syncStatusChips(val) {
+  document.querySelectorAll('.status-chip').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === val);
+  });
 }
 
 // Keyboard
