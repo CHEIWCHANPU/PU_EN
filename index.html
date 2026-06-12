@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -63,40 +62,40 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 68px;
+  height: 84px;
   border-bottom: 3px solid var(--cc-orange);
 }
 .header-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 .logo-wrap {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid var(--cc-orange);
-  box-shadow: 0 0 0 3px rgba(212,90,0,.25);
+  border: 3px solid var(--cc-orange);
+  box-shadow: 0 0 0 4px rgba(212,90,0,.25);
   flex-shrink: 0;
   background: #000;
 }
 .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
 .brand-info {}
 .brand-name {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 800;
-  letter-spacing: .03em;
+  letter-spacing: .04em;
   color: #fff;
   text-transform: uppercase;
   line-height: 1.1;
 }
 .brand-name span { color: var(--cc-orange); }
 .brand-sub {
-  font-size: 11px;
+  font-size: 12.5px;
   color: rgba(255,255,255,.6);
   font-weight: 400;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 .header-right {
   display: flex;
@@ -601,6 +600,130 @@ tbody tr { transition: background .1s; }
 }
 .site-footer span { color: var(--cc-orange); }
 
+/* ─── LOG BOX ─── */
+.log-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.log-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.log-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.log-add-btn:hover { background: var(--accent2); }
+.log-new-entry {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+.log-new-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  transition: border-color .15s;
+}
+.log-new-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(27,94,59,.1); }
+.log-list { max-height: 180px; overflow-y: auto; }
+.log-entry {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #F0EFEb;
+  align-items: flex-start;
+  transition: background .1s;
+}
+.log-entry:last-child { border-bottom: none; }
+.log-entry:hover { background: #FAFAF8; }
+.log-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.log-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.log-text {
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+  line-height: 1.5;
+}
+.log-del {
+  background: none;
+  border: none;
+  color: #CCC;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color .15s;
+}
+.log-del:hover { color: var(--danger); }
+.log-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ─── FILTER WRAP ─── */
+.filter-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.filter-icon {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+.filter-wrap .filter-select {
+  padding-left: 30px;
+}
+.filter-select.active {
+  border-color: var(--cc-orange);
+  background-color: #fff8f3;
+  color: var(--cc-orange);
+  font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(212,90,0,.15);
+}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 700px) {
   .site-header { padding: 0 16px; height: 60px; }
@@ -641,8 +764,24 @@ tbody tr { transition: background .1s; }
   </div>
 </header>
 
-<div style="text-align: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold;">
-  🕒 <span id="realtime-clock">กำลังดึงเวลาปัจจุบัน...</span>
+<!-- ═══ CLOCK BAR ═══ -->
+<div id="clock-bar" style="
+  background: linear-gradient(90deg,#1A1A1A 0%,#2a1a00 100%);
+  border-bottom: 1px solid rgba(212,90,0,.3);
+  padding: 6px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+  color: rgba(255,255,255,.55); gap: 12px; flex-wrap: wrap;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span style="color:rgba(255,255,255,.3);font-size:10px;letter-spacing:.08em;text-transform:uppercase;">เวลาปัจจุบัน</span>
+    <span id="clock-time" style="color:#F9A825;font-size:15px;font-weight:500;letter-spacing:.04em;">—</span>
+    <span id="clock-date" style="color:rgba(255,255,255,.6);font-size:11px;">—</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;font-size:11px;">
+    <span id="clock-day-th" style="color:rgba(255,255,255,.45);"></span>
+    <span style="color:rgba(212,90,0,.6)">|</span>
+    <span id="clock-next-refresh" style="color:rgba(255,255,255,.4);">รีเฟรชถัดไป: —</span>
+  </div>
 </div>
   
 <!-- ═══ HERO BAND ═══ -->
@@ -708,29 +847,58 @@ tbody tr { transition: background .1s; }
     <input class="search-input" id="search" type="text" placeholder="ค้นหาชื่อบริษัท หรือ ID..." oninput="goPage(1);renderTable()">
   </div>
   <div class="divider"></div>
-  <select class="filter-select" id="f9001" onchange="goPage(1);renderTable()">
-    <option value="">🏅 ISO 9001: ทั้งหมด</option>
-    <option value="มี">มี</option>
-    <option value="ไม่มี">ไม่มี</option>
-    <option value="กำลังติดตาม">กำลังติดตาม</option>
-  </select>
-  <select class="filter-select" id="f14001" onchange="goPage(1);renderTable()">
-    <option value="">🌿 ISO 14001: ทั้งหมด</option>
-    <option value="มี">มี</option>
-    <option value="ไม่มี">ไม่มี</option>
-    <option value="กำลังติดตาม">กำลังติดตาม</option>
-  </select>
-  <select class="filter-select" id="fiatf" onchange="goPage(1);renderTable()">
-    <option value="">🚗 IATF 16949: ทั้งหมด</option>
-    <option value="มี">มี</option>
-    <option value="ไม่มี">ไม่มี</option>
-    <option value="กำลังติดตาม">กำลังติดตาม</option>
-  </select>
-  <select class="filter-select" id="fstatus" onchange="goPage(1);renderTable()">
-    <option value="">📋 สถานะ: ทั้งหมด</option>
-    <option value="soon">⚠️ ใกล้หมดอายุ (90 วัน)</option>
-    <option value="expired">🔴 หมดอายุแล้ว</option>
-  </select>
+
+  <!-- ISO 9001 -->
+  <div class="filter-wrap">
+    <span class="filter-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><polyline points="9 11 12 14 15 11" style="display:none"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D45A00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.09 6.26H21l-5.47 3.97 2.09 6.26L12 14.52l-5.62 3.97 2.09-6.26L3 8.26h6.91z"/></svg>
+    </span>
+    <select class="filter-select" id="f9001" onchange="goPage(1);renderTable();updateFilterStyle('f9001')">
+      <option value="">ISO 9001: ทั้งหมด</option>
+      <option value="มี">✔ มี</option>
+      <option value="ไม่มี">✘ ไม่มี</option>
+      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
+    </select>
+  </div>
+
+  <!-- ISO 14001 -->
+  <div class="filter-wrap">
+    <span class="filter-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </span>
+    <select class="filter-select" id="f14001" onchange="goPage(1);renderTable();updateFilterStyle('f14001')">
+      <option value="">ISO 14001: ทั้งหมด</option>
+      <option value="มี">✔ มี</option>
+      <option value="ไม่มี">✘ ไม่มี</option>
+      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
+    </select>
+  </div>
+
+  <!-- IATF 16949 -->
+  <div class="filter-wrap">
+    <span class="filter-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </span>
+    <select class="filter-select" id="fiatf" onchange="goPage(1);renderTable();updateFilterStyle('fiatf')">
+      <option value="">IATF 16949: ทั้งหมด</option>
+      <option value="มี">✔ มี</option>
+      <option value="ไม่มี">✘ ไม่มี</option>
+      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
+    </select>
+  </div>
+
+  <!-- สถานะอายุ -->
+  <div class="filter-wrap">
+    <span class="filter-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </span>
+    <select class="filter-select" id="fstatus" onchange="goPage(1);renderTable();updateFilterStyle('fstatus')">
+      <option value="">สถานะ: ทั้งหมด</option>
+      <option value="soon">⚠ ใกล้หมดอายุ (90 วัน)</option>
+      <option value="expired">● หมดอายุแล้ว</option>
+    </select>
+  </div>
 </div>
 
 <!-- ═══ TABLE ═══ -->
@@ -850,10 +1018,47 @@ tbody tr { transition: background .1s; }
       </div>
     </div>
 
-    <div class="section-label">หมายเหตุ</div>
-    <div class="form-group">
-      <label class="form-label">สถานะ / LOG</label>
-      <input class="form-input" type="text" id="f-status" placeholder="เช่น รอเอกสาร, ส่งแล้ว">
+    <div class="section-label">📝 หมายเหตุ / LOG</div>
+
+    <!-- สถานะปัจจุบัน -->
+    <div class="form-group" style="margin-bottom:10px">
+      <label class="form-label">สถานะปัจจุบัน</label>
+      <select class="form-input" id="f-status" style="cursor:pointer">
+        <option value="">— ไม่ระบุ —</option>
+        <option value="รอเอกสาร">📄 รอเอกสาร</option>
+        <option value="ส่งแล้ว">📬 ส่งแล้ว</option>
+        <option value="อยู่ระหว่างดำเนินการ">⚙️ อยู่ระหว่างดำเนินการ</option>
+        <option value="ต่ออายุแล้ว">✅ ต่ออายุแล้ว</option>
+        <option value="ยกเลิกใบรับรอง">❌ ยกเลิกใบรับรอง</option>
+      </select>
+    </div>
+
+    <!-- LOG textarea + ปุ่มเพิ่ม entry -->
+    <div class="log-box">
+      <div class="log-box-header">
+        <span style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">ประวัติบันทึก</span>
+        <button type="button" class="log-add-btn" onclick="addLogEntry()" title="เพิ่มบันทึกใหม่">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          เพิ่มบันทึก
+        </button>
+      </div>
+
+      <!-- input แถวใหม่ -->
+      <div class="log-new-entry" id="log-new-wrap" style="display:none">
+        <textarea class="log-new-input" id="log-new-text" placeholder="พิมพ์บันทึกใหม่..." rows="2"></textarea>
+        <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:6px">
+          <button type="button" class="btn btn-ghost-dark" style="font-size:12px;padding:5px 12px" onclick="cancelLogEntry()">ยกเลิก</button>
+          <button type="button" class="btn" style="font-size:12px;padding:5px 12px;background:var(--accent);color:#fff" onclick="confirmLogEntry()">✔ เพิ่ม</button>
+        </div>
+      </div>
+
+      <!-- รายการ log -->
+      <div class="log-list" id="log-list">
+        <div class="log-empty">ยังไม่มีบันทึก</div>
+      </div>
+
+      <!-- hidden field เก็บ log ทั้งหมด -->
+      <textarea id="f-log" style="display:none"></textarea>
     </div>
 
     <div class="modal-actions">
@@ -921,6 +1126,7 @@ async function loadSheet() {
         expiatf:  parseGDate(c[7]?.v),
         status:   c[8]?.v ?? '',
         week:     c[9]?.v ?? '',
+        log:      c[10]?.v ?? '',
       };
     });
 
@@ -1154,6 +1360,11 @@ function openForm(idx) {
   document.getElementById('f-iatfd').value   = r.expiatf || '';
   document.getElementById('f-status').value  = r.status || '';
   document.getElementById('f-week').value    = r.week || '';
+  // load log
+  logEntries = parseLogField(r.log || '');
+  renderLogList();
+  document.getElementById('log-new-wrap').style.display = 'none';
+  document.getElementById('log-new-text').value = '';
   document.getElementById('modal-overlay').classList.add('open');
 }
 
@@ -1175,6 +1386,7 @@ async function saveForm() {
     expiatf:  document.getElementById('f-iatfd').value,
     status:   document.getElementById('f-status').value,
     week:     document.getElementById('f-week').value,
+    log:      document.getElementById('f-log').value,
   };
 
   try {
@@ -1214,11 +1426,180 @@ async function deleteRow() {
   }
 }
 
+function updateFilterStyle(id) {
+  const el = document.getElementById(id);
+  if (el.value) el.classList.add('active');
+  else el.classList.remove('active');
+}
+
 // Keyboard
 document.addEventListener('keydown', e => { if (e.key==='Escape') closeForm(); });
 
-// Init
-loadSheet();
-setInterval(loadSheet, 5 * 60 * 1000);
-</script>
+// ── REAL-TIME CLOCK ──────────────────────────────────────────
+const DAYS_TH = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const MONTHS_TH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
+let nextRefreshAt = Date.now() + 5 * 60 * 1000;
+
+function tickClock() {
+  const now  = new Date();
+  const hh   = String(now.getHours()).padStart(2,'0');
+  const mm   = String(now.getMinutes()).padStart(2,'0');
+  const ss   = String(now.getSeconds()).padStart(2,'0');
+  const day  = DAYS_TH[now.getDay()];
+  const d    = now.getDate();
+  const mo   = MONTHS_TH[now.getMonth()];
+  const y    = now.getFullYear() + 543; // พ.ศ.
+
+  const timeEl = document.getElementById('clock-time');
+  const dateEl = document.getElementById('clock-date');
+  const dayEl  = document.getElementById('clock-day-th');
+  const nxtEl  = document.getElementById('clock-next-refresh');
+
+  if (timeEl) timeEl.textContent = `${hh}:${mm}:${ss}`;
+  if (dateEl) dateEl.textContent = `${d} ${mo} ${y}`;
+  if (dayEl)  dayEl.textContent  = `วัน${day}`;
+
+  // countdown to next auto-refresh
+  const secsLeft = Math.max(0, Math.ceil((nextRefreshAt - Date.now()) / 1000));
+  const cm = String(Math.floor(secsLeft / 60)).padStart(2,'0');
+  const cs = String(secsLeft % 60).padStart(2,'0');
+  if (nxtEl) nxtEl.textContent = `รีเฟรชถัดไป: ${cm}:${cs}`;
+
+  // also update TODAY for expiry calc (midnight crossover)
+  TODAY.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+setInterval(tickClock, 1000);
+tickClock();
+
+// ── EXPIRY ALERT BANNER ──────────────────────────────────────
+function checkExpiryAlert() {
+  const expired = data.filter(r =>
+    [r.exp9001, r.exp14001, r.expiatf].some(d => { const x = daysDiff(d); return x !== null && x < 0; })
+  );
+  const soon = data.filter(r =>
+    [r.exp9001, r.exp14001, r.expiatf].some(d => { const x = daysDiff(d); return x !== null && x >= 0 && x <= 30; })
+  );
+
+  let banner = document.getElementById('expiry-alert-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'expiry-alert-banner';
+    banner.style.cssText = `
+      position:fixed; bottom:70px; right:20px; z-index:800;
+      display:flex; flex-direction:column; gap:8px; max-width:320px;
+    `;
+    document.body.appendChild(banner);
+  }
+
+  banner.innerHTML = '';
+
+  if (expired.length > 0) {
+    const el = document.createElement('div');
+    el.style.cssText = `background:#7F1D1D;color:#fff;padding:12px 16px;border-radius:10px;
+      font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer;border-left:4px solid #EF4444;`;
+    el.innerHTML = `🔴 <b>${expired.length} บริษัท</b> หมดอายุใบรับรองแล้ว — คลิกดู`;
+    el.onclick = () => {
+      document.getElementById('fstatus').value = 'expired';
+      goPage(1); renderTable();
+      banner.innerHTML = '';
+    };
+    banner.appendChild(el);
+  }
+
+  if (soon.length > 0) {
+    const el = document.createElement('div');
+    el.style.cssText = `background:#78350F;color:#fff;padding:12px 16px;border-radius:10px;
+      font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer;border-left:4px solid #F59E0B;`;
+    el.innerHTML = `⚠️ <b>${soon.length} บริษัท</b> หมดอายุใน 30 วัน — คลิกดู`;
+    el.onclick = () => {
+      document.getElementById('fstatus').value = 'soon';
+      goPage(1); renderTable();
+      banner.innerHTML = '';
+    };
+    banner.appendChild(el);
+  }
+
+  // auto-hide after 8s
+  if (banner.children.length > 0) setTimeout(() => { banner.innerHTML = ''; }, 8000);
+}
+
+// ── LOG SYSTEM ───────────────────────────────────────────────
+let logEntries = []; // [{ts, text}]
+
+function renderLogList() {
+  const list = document.getElementById('log-list');
+  if (!logEntries.length) {
+    list.innerHTML = '<div class="log-empty">ยังไม่มีบันทึก</div>';
+  } else {
+    list.innerHTML = logEntries.slice().reverse().map((e, ri) => {
+      const i = logEntries.length - 1 - ri;
+      return `<div class="log-entry">
+        <div class="log-dot"></div>
+        <div class="log-meta">${e.ts}</div>
+        <div class="log-text">${e.text.replace(/</g,'&lt;')}</div>
+        <button class="log-del" onclick="removeLogEntry(${i})" title="ลบ">✕</button>
+      </div>`;
+    }).join('');
+  }
+  // sync hidden textarea
+  document.getElementById('f-log').value = logEntries.map(e => `[${e.ts}] ${e.text}`).join('\n');
+}
+
+function addLogEntry() {
+  document.getElementById('log-new-wrap').style.display = '';
+  document.getElementById('log-new-text').focus();
+}
+
+function cancelLogEntry() {
+  document.getElementById('log-new-wrap').style.display = 'none';
+  document.getElementById('log-new-text').value = '';
+}
+
+function confirmLogEntry() {
+  const txt = document.getElementById('log-new-text').value.trim();
+  if (!txt) return;
+  const now = new Date();
+  const ts  = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  logEntries.push({ ts, text: txt });
+  renderLogList();
+  cancelLogEntry();
+}
+
+function removeLogEntry(i) {
+  if (!confirm('ลบบันทึกนี้?')) return;
+  logEntries.splice(i, 1);
+  renderLogList();
+}
+
+function parseLogField(str) {
+  if (!str) return [];
+  return str.split('\n').filter(Boolean).map(line => {
+    const m = line.match(/^\[(.+?)\] (.+)$/);
+    return m ? { ts: m[1], text: m[2] } : { ts: '—', text: line };
+  });
+}
+
+// ── LOG KEYBOARD SHORTCUT (Ctrl+Enter to confirm) ────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeForm();
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    const wrap = document.getElementById('log-new-wrap');
+    if (wrap && wrap.style.display !== 'none') confirmLogEntry();
+  }
+});
+
+// ── AUTO REFRESH with countdown ──────────────────────────────
+function scheduleRefresh() {
+  nextRefreshAt = Date.now() + 5 * 60 * 1000;
+  setTimeout(async () => {
+    await loadSheet();
+    checkExpiryAlert();
+    scheduleRefresh();
+  }, 5 * 60 * 1000);
+}
+
+// Init
+loadSheet().then(() => { checkExpiryAlert(); scheduleRefresh(); });
+</script>
