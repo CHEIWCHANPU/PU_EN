@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ติดตามใบ CER PU/EN CCIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #F2F1EE;
+  --surface:  #FFFFFF;
+  --border:   #E4E3DE;
+  --text:     #1C1C1A;
+  --muted:    #8A8880;
+  --accent:   #1B5E3B;
+  --accent2:  #2E7D52;
+  --warn:     #B45309;
+  --danger:   #991B1B;
+  --info:     #1D4ED8;
+  --badge-yes-bg:   #DCFCE7; --badge-yes-fg: #166534;
+  --badge-no-bg:    #F1F0ED; --badge-no-fg:  #6B6A67;
+  --badge-trk-bg:   #FEF3C7; --badge-trk-fg: #92400E;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,.14), 0 8px 20px rgba(0,0,0,.08);
+  --radius:   10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Sarabun', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; }
+
+/* ── TOP NAV ── */
+.nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.brand-icon svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.brand-text { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 8px; font-size: 13px; font-family: inherit; cursor: pointer; border: none; font-weight: 500; transition: all .15s; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg); }
+.btn-danger { background: #FEE2E2; color: var(--danger); border: 1px solid #FECACA; }
+.btn-danger:hover { background: #FCA5A5; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; }
+
+/* ── STATS ── */
+.stats-band { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.stat-card { background: var(--bg); border-radius: var(--radius); padding: 14px 16px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+.stat-card::before { content: ''; position: absolute; right: -8px; top: -8px; width: 52px; height: 52px; border-radius: 50%; opacity: .07; }
+.stat-card.green::before  { background: #166534; }
+.stat-card.orange::before { background: var(--warn); }
+.stat-card.red::before    { background: var(--danger); }
+.stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 500; }
+.stat-value { font-size: 28px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace; line-height: 1; }
+.stat-value.green  { color: var(--accent); }
+.stat-value.orange { color: var(--warn); }
+.stat-value.red    { color: var(--danger); }
+.stat-value.dark   { color: var(--text); }
+
+/* ── STATUS BAR ── */
+.statusbar { padding: 9px 28px; font-size: 12px; display: flex; align-items: center; gap: 8px; font-weight: 500; border-bottom: 1px solid transparent; transition: background .3s; }
+.statusbar.loading { background: #EFF6FF; border-color: #BFDBFE; color: var(--info); }
+.statusbar.ok      { background: #F0FDF4; border-color: #BBF7D0; color: #166534; }
+.statusbar.error   { background: #FEF2F2; border-color: #FECACA; color: var(--danger); }
+.statusbar.saving  { background: #F5F3FF; border-color: #DDD6FE; color: #5B21B6; }
+.spinner { width: 13px; height: 13px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; opacity: .6; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TOOLBAR ── */
+.toolbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 28px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.search-wrap { position: relative; flex: 1; min-width: 220px; }
+.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; stroke: var(--muted); fill: none; stroke-width: 2; stroke-linecap: round; pointer-events: none; }
+.search-input { width: 100%; padding: 7px 12px 7px 34px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; background: var(--bg); outline: none; transition: border-color .15s, box-shadow .15s; }
+.search-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(27,94,59,.12); }
+.filter-select { padding: 7px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; background: var(--bg); outline: none; cursor: pointer; color: var(--text); appearance: none; padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8880' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27,94,59,.12); }
+.filter-divider { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+/* ── TABLE ── */
+.table-container { padding: 20px 28px; }
+.table-card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+thead th { background: #FAFAF8; color: var(--muted); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; padding: 11px 14px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; cursor: pointer; user-select: none; }
+thead th:hover { color: var(--text); }
+thead th .sort-icon { opacity: .35; margin-left: 3px; font-size: 9px; }
+thead th.sorted .sort-icon { opacity: 1; color: var(--accent); }
+tbody td { padding: 11px 14px; border-bottom: 1px solid #F5F4F1; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #FAFAF8; }
+tbody tr { transition: background .1s; }
+.col-id { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+.col-name { font-weight: 500; color: var(--text); }
+.badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+.b-yes  { background: var(--badge-yes-bg); color: var(--badge-yes-fg); }
+.b-no   { background: var(--badge-no-bg);  color: var(--badge-no-fg); }
+.b-trk  { background: var(--badge-trk-bg); color: var(--badge-trk-fg); }
+.date-ok   { color: var(--muted); font-size: 12px; font-family: 'IBM Plex Mono', monospace; }
+.date-warn { color: var(--warn); font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+.date-exp  { color: var(--danger); font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+.date-none { color: #CCC; font-size: 12px; }
+.chip-warn { display: inline-block; background: #FEF3C7; color: #92400E; border-radius: 4px; font-size: 10px; padding: 1px 5px; margin-left: 4px; font-weight: 600; }
+.chip-exp  { display: inline-block; background: #FEE2E2; color: #991B1B; border-radius: 4px; font-size: 10px; padding: 1px 5px; margin-left: 4px; font-weight: 600; }
+.edit-btn { background: none; border: 1px solid var(--border); border-radius: 7px; padding: 5px 10px; cursor: pointer; font-size: 13px; color: var(--muted); transition: all .15s; }
+.edit-btn:hover { border-color: var(--accent); color: var(--accent); background: #F0FDF4; }
+
+/* ── PAGINATION ── */
+.table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; background: #FAFAF8; }
+.pg-info { font-size: 12px; color: var(--muted); }
+.pg-btns { display: flex; gap: 4px; }
+.pg-btn { border: 1px solid var(--border); background: var(--surface); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; color: var(--text); transition: all .15s; }
+.pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.pg-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pg-btn:disabled { opacity: .3; cursor: default; }
+.pg-ellipsis { padding: 5px 4px; color: var(--muted); font-size: 12px; }
+
+/* ── SYNC BAR ── */
+.syncbar { padding: 7px 28px; font-size: 11.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.syncbar a { color: var(--accent); text-decoration: none; cursor: pointer; }
+.syncbar a:hover { text-decoration: underline; }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(28,28,26,.5); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(2px); padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: 14px; padding: 28px; width: 540px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border); animation: modal-in .2s ease; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.modal-title { font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; border-radius: 6px; line-height: 1; font-size: 18px; transition: color .15s; }
+.modal-close:hover { color: var(--text); }
+.section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-top: 18px; }
+.section-label:first-of-type { margin-top: 0; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.span2 { grid-column: 1 / -1; }
+.form-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.form-input, .form-select { padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; background: var(--bg); outline: none; transition: border-color .15s, box-shadow .15s; color: var(--text); width: 100%; }
+.form-input:focus, .form-select:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(27,94,59,.12); }
+.form-input[type=date] { font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+.cert-row { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cert-row + .cert-row { margin-top: 8px; }
+.cert-title { font-size: 12px; font-weight: 600; color: var(--accent); grid-column: 1 / -1; margin-bottom: 2px; }
+.modal-actions { display: flex; align-items: center; gap: 8px; justify-content: flex-end; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+.modal-actions .left { margin-right: auto; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: #1C1C1A; color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 13px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: all .25s; pointer-events: none; display: flex; align-items: center; gap: 8px; max-width: 320px; box-shadow: var(--shadow-md); }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: #14532D; }
+.toast.error   { background: #7F1D1D; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+.empty-icon { font-size: 36px; margin-bottom: 10px; opacity: .5; }
+.empty-text { font-size: 14px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .nav { padding: 0 16px; }
+  .stats-band, .toolbar, .table-container, .syncbar { padding-left: 16px; padding-right: 16px; }
+  .stat-value { font-size: 22px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.span2 { grid-column: auto; }
+  .cert-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+    </div>
+    <div>
+      <div class="brand-text">ติดตามใบ CER PU/EN CCIP</div>
+      <div class="brand-sub">ระบบติดตามใบรับรอง ISO ผู้ผลิตชิ้นส่วน</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="loadSheet()" title="รีเฟรชข้อมูล">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      รีเฟรช
+    </button>
+    <button class="btn btn-primary" onclick="openForm(null)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      เพิ่มรายการ
+    </button>
+  </div>
+</nav>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stat-card">
+    <div class="stat-label">บริษัททั้งหมด</div>
+    <div class="stat-value dark" id="s-total">—</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">มี ISO 9001</div>
+    <div class="stat-value green" id="s-9001">—</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">มี ISO 14001</div>
+    <div class="stat-value green" id="s-14001">—</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">มี IATF 16949</div>
+    <div class="stat-value green" id="s-iatf">—</div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-label">ใกล้หมดอายุ (90 วัน)</div>
+    <div class="stat-value orange" id="s-warn">—</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-label">หมดอายุแล้ว</div>
+    <div class="stat-value red" id="s-exp">—</div>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div id="statusbar" class="statusbar loading">
+  <div class="spinner"></div>
+  <span id="status-msg">กำลังดึงข้อมูลจาก Google Sheets...</span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" id="search" type="text" placeholder="ค้นหาชื่อบริษัท หรือ ID..." oninput="goPage(1);renderTable()">
+  </div>
+  <div class="filter-divider"></div>
+  <select class="filter-select" id="f9001" onchange="goPage(1);renderTable()">
+    <option value="">ISO 9001: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="f14001" onchange="goPage(1);renderTable()">
+    <option value="">ISO 14001: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="fiatf" onchange="goPage(1);renderTable()">
+    <option value="">IATF 16949: ทั้งหมด</option>
+    <option value="มี">มี</option>
+    <option value="ไม่มี">ไม่มี</option>
+    <option value="กำลังติดตาม">กำลังติดตาม</option>
+  </select>
+  <select class="filter-select" id="fstatus" onchange="goPage(1);renderTable()">
+    <option value="">สถานะอายุ: ทั้งหมด</option>
+    <option value="soon">⚠️ ใกล้หมดอายุ (90 วัน)</option>
+    <option value="expired">🔴 หมดอายุแล้ว</option>
+  </select>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+  <div class="table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:54px"   onclick="sortBy('id')">ID <span class="sort-icon" id="si-id">▲</span></th>
+            <th style="min-width:210px" onclick="sortBy('name')">ชื่อบริษัท <span class="sort-icon" id="si-name"></span></th>
+            <th style="width:82px;text-align:center" onclick="sortBy('iso9001')">ISO 9001 <span class="sort-icon" id="si-iso9001"></span></th>
+            <th style="width:120px">วันหมดอายุ</th>
+            <th style="width:82px;text-align:center" onclick="sortBy('iso14001')">ISO 14001 <span class="sort-icon" id="si-iso14001"></span></th>
+            <th style="width:120px">วันหมดอายุ</th>
+            <th style="width:82px;text-align:center" onclick="sortBy('iatf')">IATF 16949 <span class="sort-icon" id="si-iatf"></span></th>
+            <th style="width:120px">วันหมดอายุ</th>
+            <th style="width:95px">สถานะ</th>
+            <th style="width:56px;text-align:center">แก้ไข</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="pg-info" id="pg-info"></span>
+      <div class="pg-btns" id="pg-btns"></div>
+    </div>
+  </div>
+</div>
+
+<div class="syncbar" id="syncbar"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeForm()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">เพิ่มรายการใหม่</div>
+      <button class="modal-close" onclick="closeForm()">✕</button>
+    </div>
+
+    <div class="section-label">ข้อมูลทั่วไป</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">ID / รหัส</label>
+        <input class="form-input" type="number" id="f-id" placeholder="เช่น 43">
+      </div>
+      <div class="form-group">
+        <label class="form-label">สัปดาห์</label>
+        <input class="form-input" type="text" id="f-week" placeholder="เช่น W25">
+      </div>
+      <div class="form-group span2">
+        <label class="form-label">ชื่อบริษัท</label>
+        <input class="form-input" type="text" id="f-name" placeholder="ชื่อบริษัทเต็ม">
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:18px">ใบรับรอง ISO</div>
+    <div class="cert-row">
+      <div class="cert-title">🏅 ISO 9001</div>
+      <div class="form-group">
+        <label class="form-label">สถานะ</label>
+        <select class="form-select" id="f-9001">
+          <option value="มี">มี</option>
+          <option value="ไม่มี">ไม่มี</option>
+          <option value="กำลังติดตาม">กำลังติดตาม</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">วันหมดอายุ</label>
+        <input class="form-input" type="date" id="f-9001d">
+      </div>
+    </div>
+
+    <div class="cert-row">
+      <div class="cert-title">🌿 ISO 14001</div>
+      <div class="form-group">
+        <label class="form-label">สถานะ</label>
+        <select class="form-select" id="f-14001">
+          <option value="มี">มี</option>
+          <option value="ไม่มี">ไม่มี</option>
+          <option value="กำลังติดตาม">กำลังติดตาม</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">วันหมดอายุ</label>
+        <input class="form-input" type="date" id="f-14001d">
+      </div>
+    </div>
+
+    <div class="cert-row">
+      <div class="cert-title">🚗 IATF 16949</div>
+      <div class="form-group">
+        <label class="form-label">สถานะ</label>
+        <select class="form-select" id="f-iatf">
+          <option value="มี">มี</option>
+          <option value="ไม่มี">ไม่มี</option>
+          <option value="กำลังติดตาม">กำลังติดตาม</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">วันหมดอายุ</label>
+        <input class="form-input" type="date" id="f-iatfd">
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:18px">หมายเหตุ</div>
+    <div class="form-group">
+      <label class="form-label">สถานะ / LOG</label>
+      <input class="form-input" type="text" id="f-status" placeholder="เช่น รอเอกสาร, ส่งแล้ว">
+    </div>
+
+    <div class="modal-actions">
+      <div class="left">
+        <button class="btn btn-danger" id="btn-del" onclick="deleteRow()" style="display:none">🗑 ลบรายการ</button>
+      </div>
+      <button class="btn btn-ghost" onclick="closeForm()">ยกเลิก</button>
+      <button class="btn btn-primary" id="btn-save" onclick="saveForm()">💾 บันทึกลง Sheet</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG — แก้ค่านี้ให้ตรงกับ Apps Script ของคุณ
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKy6reN9FkLJmuzSWwVu13QMd3jKQX9dqCt2YZg_BfVl9Cw6gUlrd72h1GZrMLEytc1Q/exec';
+const SHEET_ID   = '1EqFGdwfCRWGapWUwSkhRFvUMraKRtRv3bARhlrBomJk';
+const GID        = '206207794';
+const PER_PAGE   = 25;
+// ══════════════════════════════════════════
+
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+let data = [], editIdx = null, sortCol = 'id', sortDir = 1, curPage = 1, lastSync = null;
+
+// ── LOAD ─────────────────────────────────────────────────────
+async function loadSheet() {
+  setStatus('loading', 'กำลังดึงข้อมูลจาก Google Sheets...');
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&t=${Date.now()}`;
+    const res  = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows || [];
+
+    data = rows.filter(r => r.c && r.c[0]?.v !== null).map(r => {
+      const c = r.c;
+      return {
+        id:       c[0]?.v ?? '',
+        name:     c[1]?.v ?? '',
+        iso9001:  c[2]?.v ?? '',
+        exp9001:  parseGDate(c[3]?.v),
+        iso14001: c[4]?.v ?? '',
+        exp14001: parseGDate(c[5]?.v),
+        iatf:     c[6]?.v ?? '',
+        expiatf:  parseGDate(c[7]?.v),
+        status:   c[8]?.v ?? '',
+        week:     c[9]?.v ?? '',
+      };
+    });
+
+    lastSync = new Date();
+    setStatus('ok', `ดึงข้อมูลสำเร็จ — ${data.length} รายการ  •  อัปเดตล่าสุด: ${lastSync.toLocaleTimeString('th-TH')}`);
+    renderAll();
+  } catch(e) {
+    setStatus('error', `ดึงข้อมูลไม่สำเร็จ: ${e.message}`);
+  }
+}
+
+// ── WRITE/UPDATE/DELETE via Apps Script ──────────────────────
+async function callScript(payload) {
+  const res  = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return { ok: false, error: text }; }
+}
+
+// ── HELPERS ──────────────────────────────────────────────────
+function parseGDate(v) {
+  if (!v) return '';
+  if (typeof v === 'string' && v.startsWith('Date(')) {
+    const [y,m,d] = v.slice(5,-1).split(',').map(Number);
+    return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  }
+  if (typeof v === 'string' && v.includes('/')) {
+    const p = v.split('/');
+    if (p.length===3) return `${p[2]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}`;
+  }
+  return v || '';
+}
+
+function daysDiff(d) {
+  if (!d) return null;
+  const dt = new Date(d); dt.setHours(0,0,0,0);
+  return Math.ceil((dt - TODAY) / 86400000);
+}
+
+function fmtDate(d) {
+  if (!d) return '<span class="date-none">—</span>';
+  const diff = daysDiff(d);
+  const [y,m,dy] = d.split('-');
+  const disp = `${dy}/${m}/${String(y).slice(2)}`;
+  if (diff < 0)   return `<span class="date-exp">${disp}<span class="chip-exp">หมดแล้ว</span></span>`;
+  if (diff <= 90) return `<span class="date-warn">${disp}<span class="chip-warn">${diff}ว.</span></span>`;
+  return `<span class="date-ok">${disp}</span>`;
+}
+
+function badge(v) {
+  if (v === 'มี')           return '<span class="badge b-yes">มี</span>';
+  if (v === 'กำลังติดตาม') return '<span class="badge b-trk">ติดตาม</span>';
+  return '<span class="badge b-no">ไม่มี</span>';
+}
+
+function setStatus(type, msg) {
+  const bar = document.getElementById('statusbar');
+  bar.className = 'statusbar ' + (type === 'ok' ? 'ok' : type === 'error' ? 'error' : type === 'saving' ? 'saving' : 'loading');
+  let sp = bar.querySelector('.spinner');
+  if (type === 'loading' || type === 'saving') {
+    if (!sp) { sp = document.createElement('div'); sp.className = 'spinner'; bar.prepend(sp); }
+  } else {
+    if (sp) sp.remove();
+  }
+  document.getElementById('status-msg').textContent = msg;
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 3200);
+}
+
+// ── FILTER + SORT ─────────────────────────────────────────────
+function filtered() {
+  const q   = document.getElementById('search').value.toLowerCase();
+  const f9  = document.getElementById('f9001').value;
+  const f14 = document.getElementById('f14001').value;
+  const fi  = document.getElementById('fiatf').value;
+  const fs  = document.getElementById('fstatus').value;
+  return data.filter(r => {
+    if (q && !r.name.toLowerCase().includes(q) && !String(r.id).includes(q)) return false;
+    if (f9  && r.iso9001  !== f9)  return false;
+    if (f14 && r.iso14001 !== f14) return false;
+    if (fi  && r.iatf     !== fi)  return false;
+    if (fs) {
+      const dates = [r.exp9001, r.exp14001, r.expiatf].filter(Boolean);
+      if (fs === 'soon')    return dates.some(d => { const x=daysDiff(d); return x!==null&&x>=0&&x<=90; });
+      if (fs === 'expired') return dates.some(d => { const x=daysDiff(d); return x!==null&&x<0; });
+    }
+    return true;
+  });
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  ['id','name','iso9001','iso14001','iatf'].forEach(c => {
+    const el = document.getElementById('si-'+c);
+    if (el) { el.textContent = ''; el.parentElement.classList.remove('sorted'); }
+  });
+  const el = document.getElementById('si-'+col);
+  if (el) { el.textContent = sortDir===1?'▲':'▼'; el.parentElement.classList.add('sorted'); }
+  curPage = 1; renderTable();
+}
+
+function goPage(p) { curPage = p; }
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderAll() { updateStats(); renderTable(); }
+
+function updateStats() {
+  document.getElementById('s-total').textContent = data.length;
+  document.getElementById('s-9001').textContent  = data.filter(r=>r.iso9001==='มี').length;
+  document.getElementById('s-14001').textContent = data.filter(r=>r.iso14001==='มี').length;
+  document.getElementById('s-iatf').textContent  = data.filter(r=>r.iatf==='มี').length;
+  document.getElementById('s-warn').textContent  = data.filter(r=>[r.exp9001,r.exp14001,r.expiatf].some(d=>{const x=daysDiff(d);return x!==null&&x>=0&&x<=90;})).length;
+  document.getElementById('s-exp').textContent   = data.filter(r=>[r.exp9001,r.exp14001,r.expiatf].some(d=>{const x=daysDiff(d);return x!==null&&x<0;})).length;
+}
+
+function renderTable() {
+  const rows = filtered();
+  rows.sort((a,b) => {
+    const av=a[sortCol], bv=b[sortCol];
+    if (sortCol==='id') return (Number(av)-Number(bv))*sortDir;
+    return String(av).localeCompare(String(bv),'th')*sortDir;
+  });
+  const total=rows.length, pages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if (curPage > pages) curPage = pages;
+  const start=(curPage-1)*PER_PAGE, slice=rows.slice(start,start+PER_PAGE);
+
+  document.getElementById('pg-info').textContent =
+    `แสดง ${total===0?0:start+1}–${Math.min(start+PER_PAGE,total)} จาก ${total} รายการ`;
+
+  // Pagination
+  const pb = document.getElementById('pg-btns'); pb.innerHTML = '';
+  const mkBtn = (label, page, disabled, active) => {
+    const b = document.createElement('button');
+    b.className = 'pg-btn' + (active?' active':''); b.textContent = label; b.disabled = disabled;
+    b.onclick = () => { curPage=page; renderTable(); }; pb.appendChild(b);
+  };
+  mkBtn('←', curPage-1, curPage<=1, false);
+  for (let p=1; p<=pages; p++) {
+    if (pages>8 && p>3 && p<pages-2 && Math.abs(p-curPage)>1) {
+      if (p===4) { const s=document.createElement('span'); s.className='pg-ellipsis'; s.textContent='…'; pb.appendChild(s); }
+      continue;
+    }
+    mkBtn(p, p, false, p===curPage);
+  }
+  mkBtn('→', curPage+1, curPage>=pages, false);
+
+  // Rows
+  const tbody = document.getElementById('tbody');
+  if (slice.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">ไม่พบข้อมูลที่ตรงกัน</div></div></td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map(r => {
+      const idx = data.indexOf(r);
+      const statusCol = r.status ? `<span style="font-size:12px;color:var(--muted)">${r.status}</span>` : '<span style="color:#ddd;font-size:12px">—</span>';
+      return `<tr>
+        <td class="col-id">${r.id}</td>
+        <td class="col-name">${r.name}</td>
+        <td style="text-align:center">${badge(r.iso9001)}</td>
+        <td>${fmtDate(r.exp9001)}</td>
+        <td style="text-align:center">${badge(r.iso14001)}</td>
+        <td>${fmtDate(r.exp14001)}</td>
+        <td style="text-align:center">${badge(r.iatf)}</td>
+        <td>${fmtDate(r.expiatf)}</td>
+        <td>${statusCol}</td>
+        <td style="text-align:center"><button class="edit-btn" onclick="openForm(${idx})">✏️</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('syncbar').innerHTML = lastSync
+    ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+     ข้อมูลจาก Google Sheets — <a onclick="loadSheet()">รีเฟรชข้อมูล</a> • อัปเดตล่าสุด ${lastSync.toLocaleTimeString('th-TH')}`
+    : '';
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openForm(idx) {
+  editIdx = idx;
+  const isNew = idx === null;
+  document.getElementById('modal-title').textContent = isNew ? '➕ เพิ่มรายการใหม่' : '✏️ แก้ไขรายการ';
+  document.getElementById('btn-del').style.display   = isNew ? 'none' : '';
+  document.getElementById('btn-save').disabled = false;
+  document.getElementById('btn-save').textContent = '💾 บันทึกลง Sheet';
+  const r = isNew ? {} : data[idx];
+  document.getElementById('f-id').value      = r.id || '';
+  document.getElementById('f-name').value    = r.name || '';
+  document.getElementById('f-9001').value    = r.iso9001 || 'มี';
+  document.getElementById('f-9001d').value   = r.exp9001 || '';
+  document.getElementById('f-14001').value   = r.iso14001 || 'มี';
+  document.getElementById('f-14001d').value  = r.exp14001 || '';
+  document.getElementById('f-iatf').value    = r.iatf || 'มี';
+  document.getElementById('f-iatfd').value   = r.expiatf || '';
+  document.getElementById('f-status').value  = r.status || '';
+  document.getElementById('f-week').value    = r.week || '';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeForm() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+async function saveForm() {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true; btn.textContent = '⏳ กำลังบันทึก...';
+  setStatus('saving', 'กำลังบันทึกลง Google Sheets...');
+
+  const row = {
+    id:       document.getElementById('f-id').value,
+    name:     document.getElementById('f-name').value,
+    iso9001:  document.getElementById('f-9001').value,
+    exp9001:  document.getElementById('f-9001d').value,
+    iso14001: document.getElementById('f-14001').value,
+    exp14001: document.getElementById('f-14001d').value,
+    iatf:     document.getElementById('f-iatf').value,
+    expiatf:  document.getElementById('f-iatfd').value,
+    status:   document.getElementById('f-status').value,
+    week:     document.getElementById('f-week').value,
+  };
+
+  try {
+    let res;
+    if (editIdx === null) {
+      res = await callScript({ action: 'write', row });
+    } else {
+      res = await callScript({ action: 'update', id: data[editIdx].id, row });
+    }
+    if (res.ok) {
+      showToast(editIdx===null ? '✅ เพิ่มรายการสำเร็จ' : '✅ แก้ไขสำเร็จ', 'success');
+      closeForm();
+      await loadSheet();
+    } else {
+      throw new Error(res.error || 'ไม่ทราบสาเหตุ');
+    }
+  } catch(e) {
+    showToast('❌ บันทึกไม่สำเร็จ: ' + e.message, 'error');
+    setStatus('error', 'บันทึกไม่สำเร็จ: ' + e.message);
+    btn.disabled = false; btn.textContent = '💾 บันทึกลง Sheet';
+  }
+}
+
+async function deleteRow() {
+  if (editIdx === null) return;
+  if (!confirm('ต้องการลบรายการนี้จาก Google Sheets?\n\nการลบไม่สามารถย้อนกลับได้')) return;
+  setStatus('saving', 'กำลังลบข้อมูล...');
+  try {
+    const res = await callScript({ action: 'delete', id: data[editIdx].id });
+    if (res.ok) {
+      showToast('🗑️ ลบรายการสำเร็จ', 'success');
+      closeForm(); await loadSheet();
+    } else { throw new Error(res.error || 'ไม่ทราบสาเหตุ'); }
+  } catch(e) {
+    showToast('❌ ลบไม่สำเร็จ: ' + e.message, 'error');
+    setStatus('error', 'ลบไม่สำเร็จ: ' + e.message);
+  }
+}
+
+// Keyboard close
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeForm(); });
+
+// ── INIT ─────────────────────────────────────────────────────
+loadSheet();
+setInterval(loadSheet, 5 * 60 * 1000); // auto-refresh ทุก 5 นาที
+</script>
+</body>
+</html>
