@@ -148,7 +148,6 @@
 </div>
 <div class="sync-note" id="sync-note"></div>
 
-<!-- MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeForm()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-title" id="modal-title">เพิ่มรายการใหม่</div>
@@ -182,6 +181,7 @@
 
 <script>
 // ══════════════════════════════════════════
+// ⚠️ สำคัญมาก: ต้องนำ URL ล่าสุดที่ได้จากการ Deploy ใหม่ (Anyone) มาวางตรงนี้ครับ
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKy6reN9FkLJmuzSWwVu13QMd3jKQX9dqCt2YZg_BfVl9Cw6gUlrd72h1GZrMLEytc1Q/exec';
 const SHEET_ID   = '1EqFGdwfCRWGapWUwSkhRFvUMraKRtRv3bARhlrBomJk';
 const GID        = '206207794';
@@ -274,6 +274,7 @@ function badge(v) {
 
 function setStatus(type, msg) {
   const bar = document.getElementById('statusbar');
+  if (!bar) return;
   bar.className = 'statusbar' + (type==='ok'?' ok':type==='error'?' error':type==='saving'?' saving':'');
   const sp = bar.querySelector('.spinner');
   if (sp) sp.remove();
@@ -281,13 +282,6 @@ function setStatus(type, msg) {
     const s = document.createElement('div'); s.className='spinner'; bar.prepend(s);
   }
   document.getElementById('status-msg').textContent = msg;
-}
-
-function showToast(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  setTimeout(() => t.className = 'toast', 3000);
 }
 
 // ── FILTER + SORT ────────────────────────────────────────────
@@ -396,7 +390,7 @@ function openForm(idx){
   document.getElementById('btn-del').style.display   = isNew?'none':'';
   document.getElementById('btn-save').disabled = false;
   document.getElementById('btn-save').textContent = '💾 บันทึกลง Sheet';
-  const r=isNew?{}:data[idx];
+  const r=isNew?{} : data[idx];
   document.getElementById('f-id').value     = r.id||'';
   document.getElementById('f-name').value   = r.name||'';
   document.getElementById('f-9001').value   = r.iso9001||'มี';
@@ -411,6 +405,14 @@ function openForm(idx){
 }
 
 function closeForm(){ document.getElementById('modal-bg').classList.remove('open'); }
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 3000);
+}
 
 async function saveForm(){
   const btn = document.getElementById('btn-save');
@@ -442,7 +444,7 @@ async function saveForm(){
     if (res.ok) {
       showToast(editIdx===null ? '✅ เพิ่มรายการสำเร็จ' : '✅ แก้ไขสำเร็จ', 'success');
       closeForm();
-      await loadSheet(); // reload จาก Sheet จริง
+      await loadSheet();
     } else {
       throw new Error(res.error || 'ไม่ทราบสาเหตุ');
     }
