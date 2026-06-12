@@ -699,6 +699,85 @@ tbody tr { transition: background .1s; }
   font-size: 12px;
 }
 
+/* ─── CHIP FILTER BAND ─── */
+.chip-filter-band {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 32px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+.chip-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px 16px 4px 0;
+}
+.chip-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.chip-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: #aaa; color: var(--text); background: #fff; }
+.chip.active { background: var(--text); color: #fff; border-color: var(--text); font-weight: 600; }
+.chip-yes.active  { background: #166534; border-color: #166534; color: #fff; }
+.chip-no.active   { background: #6B6A67; border-color: #6B6A67; color: #fff; }
+.chip-trk.active  { background: #92400E; border-color: #92400E; color: #fff; }
+.chip-warn.active { background: #B45309; border-color: #B45309; color: #fff; }
+.chip-exp.active  { background: #9B1C1C; border-color: #9B1C1C; color: #fff; }
+.chip-divider {
+  width: 1px; height: 40px;
+  background: var(--border);
+  margin: 0 12px 0 4px;
+  flex-shrink: 0;
+  align-self: center;
+}
+.chip-reset {
+  margin-left: auto;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #FECACA;
+  background: #FEF2F2;
+  color: #9B1C1C;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.chip-reset:hover { background: #FCA5A5; }
+
 /* ─── FILTER WRAP ─── */
 .filter-wrap {
   position: relative;
@@ -846,59 +925,32 @@ tbody tr { transition: background .1s; }
     <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input class="search-input" id="search" type="text" placeholder="ค้นหาชื่อบริษัท หรือ ID..." oninput="goPage(1);renderTable()">
   </div>
-  <div class="divider"></div>
+</div>
 
-  <!-- ISO 9001 -->
-  <div class="filter-wrap">
-    <span class="filter-icon">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D45A00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.09 6.26H21l-5.47 3.97 2.09 6.26L12 14.52l-5.62 3.97 2.09-6.26L3 8.26h6.91z"/></svg>
-    </span>
-    <select class="filter-select" id="f9001" onchange="goPage(1);renderTable();updateFilterStyle('f9001')">
-      <option value="">ISO 9001: ทั้งหมด</option>
-      <option value="มี">✔ มี</option>
-      <option value="ไม่มี">✘ ไม่มี</option>
-      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
-    </select>
-  </div>
-
-  <!-- ISO 14001 -->
-  <div class="filter-wrap">
-    <span class="filter-icon">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </span>
-    <select class="filter-select" id="f14001" onchange="goPage(1);renderTable();updateFilterStyle('f14001')">
-      <option value="">ISO 14001: ทั้งหมด</option>
-      <option value="มี">✔ มี</option>
-      <option value="ไม่มี">✘ ไม่มี</option>
-      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
-    </select>
-  </div>
-
-  <!-- IATF 16949 -->
-  <div class="filter-wrap">
-    <span class="filter-icon">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-    </span>
-    <select class="filter-select" id="fiatf" onchange="goPage(1);renderTable();updateFilterStyle('fiatf')">
-      <option value="">IATF 16949: ทั้งหมด</option>
-      <option value="มี">✔ มี</option>
-      <option value="ไม่มี">✘ ไม่มี</option>
-      <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
-    </select>
-  </div>
+<!-- ═══ CHIP FILTER BAND ═══ -->
+<div class="chip-filter-band">
 
   <!-- สถานะอายุ -->
-  <div class="filter-wrap">
-    <span class="filter-icon">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    </span>
-    <select class="filter-select" id="fstatus" onchange="goPage(1);renderTable();updateFilterStyle('fstatus')">
-      <option value="">สถานะ: ทั้งหมด</option>
-      <option value="soon">⚠ ใกล้หมดอายุ (90 วัน)</option>
-      <option value="expired">● หมดอายุแล้ว</option>
-    </select>
+  <div class="chip-group">
+    <div class="chip-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      สถานะอายุใบรับรอง
+    </div>
+    <div class="chip-row">
+      <button class="chip active" data-filter="fstatus" data-val="" onclick="setChip(this)">ทั้งหมด</button>
+      <button class="chip chip-warn" data-filter="fstatus" data-val="soon" onclick="setChip(this)">⚠ ใกล้หมดอายุ (90 วัน)</button>
+      <button class="chip chip-exp"  data-filter="fstatus" data-val="expired" onclick="setChip(this)">🔴 หมดอายุแล้ว</button>
+    </div>
   </div>
+
+  <button class="chip-reset" id="chip-reset-btn" onclick="resetAllChips()" style="display:none">✕ ล้าง filter</button>
 </div>
+
+<!-- hidden selects -->
+<select id="f9001"   style="display:none"></select>
+<select id="f14001"  style="display:none"></select>
+<select id="fiatf"   style="display:none"></select>
+<select id="fstatus" style="display:none" onchange="goPage(1);renderTable()"></select>
 
 <!-- ═══ TABLE ═══ -->
 <div class="table-container">
@@ -1522,6 +1574,45 @@ function checkExpiryAlert() {
 
   // auto-hide after 8s
   if (banner.children.length > 0) setTimeout(() => { banner.innerHTML = ''; }, 8000);
+}
+
+// ── CHIP FILTER ──────────────────────────────────────────────
+function setChip(btn) {
+  const filterId = btn.dataset.filter;
+  const val      = btn.dataset.val;
+
+  // deactivate siblings
+  document.querySelectorAll(`.chip[data-filter="${filterId}"]`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // sync hidden select value
+  const sel = document.getElementById(filterId);
+  if (sel) sel.value = val;
+
+  // show/hide reset button
+  const anyActive = ['f9001','f14001','fiatf','fstatus'].some(id => {
+    const s = document.getElementById(id);
+    return s && s.value !== '';
+  });
+  document.getElementById('chip-reset-btn').style.display = anyActive ? '' : 'none';
+
+  goPage(1); renderTable();
+}
+
+function resetAllChips() {
+  ['f9001','f14001','fiatf','fstatus'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (sel) sel.value = '';
+    document.querySelectorAll(`.chip[data-filter="${id}"]`).forEach(b => b.classList.remove('active'));
+    const def = document.querySelector(`.chip[data-filter="${id}"][data-val=""]`);
+    if (def) def.classList.add('active');
+  });
+  document.getElementById('chip-reset-btn').style.display = 'none';
+  goPage(1); renderTable();
+}
+
+function updateFilterStyle(id) {
+  // kept for compatibility — no-op now
 }
 
 // ── LOG SYSTEM ───────────────────────────────────────────────
